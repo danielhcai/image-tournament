@@ -147,7 +147,7 @@ function shuffleArray(array) {
     }
 }
 
-// Resize image
+// Resize image only when a winner has been found
 window.onresize = (event) => {
 	if(hasGameEnded){
 		console.log(event)
@@ -155,6 +155,7 @@ window.onresize = (event) => {
 	}
 }
 
+// Resizing the winner image
 function resizeWinnerImg() {
 	heightProp = window.innerHeight/newImages[0].height
 	widthProp = window.innerWidth/newImages[0].width
