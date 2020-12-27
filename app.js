@@ -1,7 +1,6 @@
 // HTML Elements
 const rootDiv = document.getElementById('root');
 const fileSelect = document.getElementById('choooseFileContainer');
-
 // Game state
 let images = []
 let newImages = []
@@ -9,22 +8,7 @@ let hasGameEnded = false;
 
 // Choose files
 fileSelect.addEventListener('change', (event) => {
-	// Remove selector
-	fileSelect.remove();
-	
-	// Create image containers
-	leftDiv = document.createElement('div')
-	leftDiv.setAttribute("id", "left-div")
-	leftDiv.setAttribute("class", "image-container")
-	rootDiv.appendChild(leftDiv)
-
-	rightDiv = document.createElement('div')
-	rightDiv.setAttribute("id", "right-div")
-	rightDiv.setAttribute("class", "image-container")
-	rootDiv.appendChild(rightDiv)
-	
 	uploadedFiles = event.target.files
-	
 	// Add images
 	for(let i = 0; i < uploadedFiles.length; i++){
 		let imageType = uploadedFiles[i].type.split("/")[0]
@@ -39,13 +23,44 @@ fileSelect.addEventListener('change', (event) => {
 				newImages.push(event.srcElement)
 				nextImg()
 			})
-			images.push(img)
+			newImages.push(img)
 		}
 	}
-	shuffleArray(images)
-	
-	// Start game
-	nextImg()
+
+	if(newImages.length <= 1) {
+		images = []
+		alert("Need to upload two or more images.")
+	}
+	else{
+		// Remove selector
+		fileSelect.remove();
+		
+		// Create image containers
+		leftDiv = document.createElement('div')
+		leftDiv.setAttribute("id", "left-div")
+		leftDiv.setAttribute("class", "image-container")
+		rootDiv.appendChild(leftDiv)
+
+		rightDiv = document.createElement('div')
+		rightDiv.setAttribute("id", "right-div")
+		rightDiv.setAttribute("class", "image-container")
+		rootDiv.appendChild(rightDiv)
+
+		roundOf = 2
+		while(roundOf * 2 < newImages.length) {
+			roundOf *= 2
+		}
+		if(roundOf != newImages.length) {
+			for (let i = roundOf; i < newImages.length; i++) {
+				images.push(newImages.pop())
+				images.push(newImages.pop())
+			}
+			alert(`Uploaded ${newImages.length + images.length} images. ${images.length} will have to play an extra round.`)
+		}
+		
+		// Start game
+		nextImg()
+	}
 })
 
 // Add images to left and right div
