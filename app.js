@@ -27,20 +27,23 @@ fileSelect.addEventListener('change', (event) => {
 	
 	// Add images
 	for(let i = 0; i < uploadedFiles.length; i++){
-		img = document.createElement('img')
-		img.setAttribute("class", "image")
-		img.src = URL.createObjectURL(uploadedFiles[i])
-		img.addEventListener("click", (event) => {
-			if(hasGameEnded) {
-				return;
-			}
-			newImages.push(event.srcElement)
-			nextImg()
-		})
-		images.push(img)
+		let imageType = uploadedFiles[i].type.split("/")[0]
+		if(imageType = "image") {
+			img = document.createElement('img')
+			img.setAttribute("class", "image")
+			img.src = URL.createObjectURL(uploadedFiles[i])
+			img.addEventListener("click", (event) => {
+				if(hasGameEnded) {
+					return;
+				}
+				newImages.push(event.srcElement)
+				nextImg()
+			})
+			images.push(img)
+		}
 	}
 	shuffleArray(images)
-
+	
 	// Start game
 	nextImg()
 })
