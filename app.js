@@ -5,6 +5,7 @@ const fileSelect = document.getElementById('choooseFileContainer');
 let images = []
 let newImages = []
 let hasGameEnded = false;
+let imageIndex = 1
 
 // Choose files
 fileSelect.addEventListener('change', (event) => {
@@ -26,6 +27,7 @@ fileSelect.addEventListener('change', (event) => {
 			newImages.push(img)
 		}
 	}
+	shuffleArray(newImages)
 
 	if(newImages.length <= 1) {
 		images = []
@@ -34,7 +36,11 @@ fileSelect.addEventListener('change', (event) => {
 	else{
 		// Remove selector
 		fileSelect.remove();
-		
+
+		headerDiv = document.createElement('div')
+		headerDiv.setAttribute("id", "header")
+		rootDiv.appendChild(headerDiv)
+
 		// Create image containers
 		leftDiv = document.createElement('div')
 		leftDiv.setAttribute("id", "left-div")
@@ -57,7 +63,8 @@ fileSelect.addEventListener('change', (event) => {
 			}
 			alert(`Uploaded ${newImages.length + images.length} images. ${images.length} will have to play an extra round.`)
 		}
-		
+		extraImages = images.length
+		roundOf *= 2
 		// Start game
 		nextImg()
 	}
@@ -89,9 +96,23 @@ function nextImg (){
 		images = newImages
 		shuffleArray(images)
 		newImages = []
+		roundOf /= 2
+		imageIndex = 1
+	}
+
+	// Set header text
+	if(extraImages > 0) {
+		headerDiv.innerHTML = `Extra Round: ${imageIndex}/${extraImages/2}`
+		if(extraImages == imageIndex * 2) {
+			extraImages = 0
+		}
+	}
+	else {
+		headerDiv.innerHTML = `Round of ${roundOf}: ${imageIndex}/${roundOf/2}`
 	}
 
 	// Get and show next images
+	imageIndex += 1
 	leftImage = images.pop()
 	rightImage = images.pop()
 	addImage(leftImage, rightImage)
@@ -113,6 +134,7 @@ function endGame (img){
 	document.body.setAttribute("style", "background-color: black;")
 	rootDiv.appendChild(winnerDiv)
 	winnerDiv.append(img)
+	headerDiv.innerHTML = "Winner!"
 }
 
 // Shuffle and array
