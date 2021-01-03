@@ -53,11 +53,14 @@ fileSelect.addEventListener('change', (event) => {
 		rootDiv.appendChild(rightDiv)
 
 		roundOf = 2
-		while(roundOf * 2 < newImages.length) {
+		while(roundOf * 2 <= newImages.length) {
 			roundOf *= 2
 		}
+
+		newImageLength = newImages.length
 		if(roundOf != newImages.length) {
-			for (let i = roundOf; i < newImages.length; i++) {
+			for (let i = roundOf; i < newImageLength; i++) {
+				console.log(i)
 				images.push(newImages.pop())
 				images.push(newImages.pop())
 			}
@@ -65,6 +68,7 @@ fileSelect.addEventListener('change', (event) => {
 		}
 		extraImages = images.length
 		roundOf *= 2
+		
 		// Start game
 		nextImg()
 	}
